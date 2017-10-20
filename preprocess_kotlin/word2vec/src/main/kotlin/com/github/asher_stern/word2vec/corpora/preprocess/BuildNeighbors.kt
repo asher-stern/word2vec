@@ -1,4 +1,4 @@
-package com.github.asher_stern.word2vec.corpora.com.github.asher_stern.word2vec.preprocess
+package com.github.asher_stern.word2vec.corpora.preprocess
 
 
 import com.github.asher_stern.word2vec.utilities._provide
@@ -11,7 +11,7 @@ import java.io.File
  */
 
 const val UNKNOWN = "__UNKNOWN__"
-const val OUTPUT_WORDS = false
+const val OUTPUT_WORDS = true
 
 
 fun main(args: Array<String>)

@@ -7,10 +7,10 @@ import numpy as np
 # Constants
 
 # These constants should correspond to the command line arguments given to neighbors generation program.
-maximum_number_of_words = 2000
+maximum_number_of_words = 10000
 number_of_stop_words = 40
-word_file = '/home/asher/main/data/business/d2bot/working/pre_processed/fraction_0.1/words.txt'
-neighbors_file = '/home/asher/main/data/business/d2bot/working/pre_processed/fraction_0.1/neighbors.txt'
+word_file = '/home/asher/main/data/word2vec_working_directory/preprocess/bnc_0.1/words.txt'
+neighbors_file = '/home/asher/main/data/word2vec_working_directory/preprocess/bnc_0.1/neighbors.txt'
 
 # Constants related to the model
 vector_size = 30
@@ -110,4 +110,5 @@ if __name__ == '__main__':
                 (_vectors, _, _loss) = session.run([vectors, train_op, loss], feed_dict=feed_dict)
                 if 0==(batch_number % 50):
                     print batch_number, ": ", _loss
-                    print similar_words('deal', _vectors)[0:20]
+                    print similar_words('year', _vectors)[0:20]
+                    print similar_words('development', _vectors)[0:20]

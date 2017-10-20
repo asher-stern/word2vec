@@ -1,4 +1,4 @@
-package com.github.asher_stern.word2vec.corpora.com.github.asher_stern.word2vec.preprocess
+package com.github.asher_stern.word2vec.corpora.preprocess
 
 import com.github.asher_stern.word2vec.corpora.BncCollectionReader
 import com.github.asher_stern.word2vec.corpora.ReutersCollectionReader
@@ -28,17 +28,21 @@ fun main(args: Array<String>)
     args._provide {
         val corpusPath = arg
         val outputDirectory = arg
-        CorpusToTokensAndSentences(corpusPath, outputDirectory).go()
+        val corpusType = CorpusType.valueOf(arg)
+        CorpusToTokensAndSentences(corpusPath, outputDirectory, corpusType).go()
     }
 }
 
-class CorpusToTokensAndSentences(private val reader: CollectionReader, private val outputDirectory: String)
+class CorpusToTokensAndSentences(private val reader: CollectionReader, private val outputDirectory: String, private val corpusType: CorpusType)
 {
-    constructor(corpusPath: String, outputDirectory: String) : this(
-            // For Reuters corpus, uncomment the next line, and comment-out the line following the next line
-            // createReutersCollectionReader(corpusPath),
-            createBncCollectionReader(corpusPath),
-            outputDirectory
+    constructor(corpusPath: String, outputDirectory: String, corpusType: CorpusType) : this(
+            when (corpusType)
+            {
+                CorpusType.REUTERS -> createReutersCollectionReader(corpusPath)
+                CorpusType.BNC -> createBncCollectionReader(corpusPath)
+            },
+            outputDirectory,
+            corpusType
     )
 
     companion object
@@ -77,7 +81,10 @@ class CorpusToTokensAndSentences(private val reader: CollectionReader, private v
         {
             jcas.reset()
             reader.getNext(jcas.cas)
-            lap.process(jcas)
+            if (corpusType != CorpusType.BNC)
+            {
+                lap.process(jcas)
+            }
 
             val indexedTokens = JCasUtil.indexCovered(jcas, Sentence::class.java, Token::class.java)
 
@@ -106,6 +113,9 @@ class CorpusToTokensAndSentences(private val reader: CollectionReader, private v
         return tokens.map { it.coveredText.trim { !it.isLetterOrDigit() }.toLowerCase(Locale.ENGLISH) }.filter { it.isNotEmpty() }
     }
 }
+
+
+enum class CorpusType {REUTERS, BNC}
 
 
 private fun createReutersCollectionReader(directory: String): CollectionReader

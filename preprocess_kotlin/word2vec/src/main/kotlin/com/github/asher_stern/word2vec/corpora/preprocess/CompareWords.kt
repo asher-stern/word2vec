@@ -1,4 +1,4 @@
-package com.github.asher_stern.word2vec.corpora.com.github.asher_stern.word2vec.preprocess
+package com.github.asher_stern.word2vec.corpora.preprocess
 
 
 import java.io.File
