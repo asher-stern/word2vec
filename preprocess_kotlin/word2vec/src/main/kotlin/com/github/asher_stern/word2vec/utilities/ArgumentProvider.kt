@@ -22,7 +22,7 @@ fun Array<String>._provide(block: ArgumentProvider.()->Unit)
 class ArgumentProvider(private val args: Array<String>)
 {
     val arg: String
-        get() = args[index++]
+        get() = if (index>=args.size) throw RuntimeException("Some command-line-arguments are missing.") else args[index++]
 
     val again: String
         get() = args[index-1]
