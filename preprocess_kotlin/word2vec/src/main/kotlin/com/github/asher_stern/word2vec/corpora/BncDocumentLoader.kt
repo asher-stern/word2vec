@@ -66,7 +66,7 @@ class BncDocumentLoader(private val cas: JCas, private val file: File, private v
     {
         for (sentence in paragraph.getChildElements("s"))
         {
-            if (text.length>0) { text.append(" ") }
+            if (text.length > 0) { text.append(" ") }
             val beginSentence = text.length
 
             var firstIteration = true

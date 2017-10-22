@@ -62,6 +62,16 @@ def generate_example(word, context):
 
 
 def generate_batch(neighbors_file):
+    """
+    Builds batch_size examples. Each example is 10 pairs (assuming negative_examples=9).
+    The first pair is a word and a correct context.
+    In the next 9 pairs, the word is the same word as the first, and the context is randomly picked.
+    The words and the contexts are given as word-IDs.
+    :param neighbors_file: the file neighbors.txt, which contains word-context pairs
+    :return: two lists of the same size. List of words (in which each word repeats 10 times
+    consequently), and a list of contexts (in which the first context is correct, and the following
+    9 contexts are randomly picked). The lists' size is batch_size*(1+negative_examples).
+    """
     batch_word_list = list()
     batch_context_list = list()
     positive_examples = helper.read_file_in_loop(neighbors_file, batch_size)

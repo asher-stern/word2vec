@@ -22,7 +22,10 @@ import java.util.regex.Pattern
  * Created by Asher Stern on September-24 2017.
  */
 
-
+/**
+ * Entry point for generating sentences.txt and words.txt files.
+ * @param args corpus-path, output-directory, corpus-type ("REUTERS" or "BNC")
+ */
 fun main(args: Array<String>)
 {
     args._provide {
@@ -33,8 +36,28 @@ fun main(args: Array<String>)
     }
 }
 
+/**
+ * This class generates two files: sentences.txt and words.txt.
+ *
+ * The sentences.txt file contains all the sentences in the given documents from the given collection (provided by [reader]).
+ *
+ * The words.txt contains the most common 10000 words in the given corpus (provided by [reader]), sorted from most common to
+ * least common.
+ *
+ * Usage: construct this class, and call the method [go].
+ *
+ * @param reader the corpus
+ * @param outputDirectory the directory in which the files will be created.
+ * @param corpusType corpus type: can be either Reuters (RCV1. See http://trec.nist.gov/data/reuters/reuters.html) or BNC (see http://ota.ox.ac.uk/desc/2554).
+ */
 class CorpusToTokensAndSentences(private val reader: CollectionReader, private val outputDirectory: String, private val corpusType: CorpusType)
 {
+    /**
+     * Constructor, like the primary constructor, but with corpus directory-path, rather than [CollectionReader].
+     * @param corpusPath root directory of the corpus
+     * @param outputDirectory the directory in which the files will be created.
+     * @param corpusType corpus type: can be either Reuters (RCV1. See http://trec.nist.gov/data/reuters/reuters.html) or BNC (see http://ota.ox.ac.uk/desc/2554).
+     */
     constructor(corpusPath: String, outputDirectory: String, corpusType: CorpusType) : this(
             when (corpusType)
             {
@@ -52,6 +75,9 @@ class CorpusToTokensAndSentences(private val reader: CollectionReader, private v
         const val NUMBER_OF_DISTINCT_WORDS = 10000
     }
 
+    /**
+     * Generates the files.
+     */
     fun go()
     {
         val wordCount = mutableMapOf<String, Int>()
